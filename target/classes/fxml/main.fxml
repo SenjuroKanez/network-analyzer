@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.networkanalyzer.controller.MainController"
+      spacing="10">
+      
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <ComboBox fx:id="protocolFilter" prefWidth="150"/>
+        <TextField fx:id="ipFilter" promptText="Filter by IP" prefWidth="200"/>
+        <Button fx:id="captureButton" text="Start Capture" onAction="#toggleCapture"/>
+    </HBox>
+
+    <TableView fx:id="packetTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="timestampColumn" text="Timestamp" prefWidth="150"/>
+            <TableColumn fx:id="sourceIpColumn" text="Source IP" prefWidth="150"/>
+            <TableColumn fx:id="destIpColumn" text="Destination IP" prefWidth="150"/>
+            <TableColumn fx:id="protocolColumn" text="Protocol" prefWidth="100"/>
+            <TableColumn fx:id="sizeColumn" text="Size (bytes)" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+</VBox>
