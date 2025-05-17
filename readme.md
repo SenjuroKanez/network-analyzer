@@ -142,10 +142,6 @@ The built application will include both the JavaFX desktop application and the e
 4. **JavaFX warnings**: These can typically be ignored if the application is functioning
 5. **SLF4J warnings**: The application will default to a NOP logger if SLF4J implementation is missing
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
