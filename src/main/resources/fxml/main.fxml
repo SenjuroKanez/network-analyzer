@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.networkanalyzer.controller.MainController"
+      spacing="10"
+      style="-fx-background-color: #1c1c1e;"
+      stylesheets="@styles/styles.css">
+     
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    
+    <!-- Control Panel -->
+    <HBox spacing="10" 
+          alignment="CENTER_LEFT"
+          style="-fx-background-color: #1f1f22; -fx-padding: 15; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 10, 0, 5, 5);">
+        
+        <Label text="🔍 Netlyzer" 
+               style="-fx-text-fill: #e0e0e0; -fx-font-size: 14; -fx-font-weight: bold;"/>
+        
+        <ComboBox fx:id="protocolFilter" 
+                  prefWidth="150"
+                  style="-fx-background-color: linear-gradient(to bottom, #2a2a2e, #1f1f22); -fx-background-radius: 15; -fx-text-fill: #e0e0e0; -fx-padding: 10 20; -fx-font-size: 14; -fx-effect: dropshadow(gaussian, rgba(249, 249, 249, 0.8), 6, 0, 2, 2); -fx-cursor: hand;"/>
+        
+        <TextField fx:id="ipFilter" 
+                   promptText="Filter by IP" 
+                   prefWidth="200"
+                   style="-fx-background-color: #2a2a2e; -fx-background-radius: 12; -fx-text-fill: #d0d0d0; -fx-prompt-text-fill: #888; -fx-padding: 8 12; -fx-font-size: 14; -fx-effect: innershadow(gaussian, rgba(0,0,0,0.6), 4, 0, 2, 2);"/>
+        
+        <Button fx:id="captureButton" 
+                text="▶ Start Capture" 
+                onAction="#toggleCapture"
+                style="-fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c); -fx-background-radius: 20; -fx-text-fill: white; -fx-padding: 12 24; -fx-font-size: 14; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.6), 10, 0, 3, 3); -fx-cursor: hand; -fx-scale-x: 1; -fx-scale-y: 1;"
+                onMouseEntered="#onCaptureButtonHover"
+                onMouseExited="#onCaptureButtonExit"/>
+    </HBox>
+    
+    <!-- Main Content Area - Fixed sizing issue -->
+    <HBox spacing="15" VBox.vgrow="ALWAYS" fillHeight="true">
+        
+        <!-- Table View - Better sizing control -->
+        <VBox HBox.hgrow="ALWAYS" spacing="5">
+            <Label text="📡 Network Packets" 
+                   style="-fx-text-fill: #e0e0e0; -fx-font-size: 16; -fx-font-weight: bold;"/>
+            
+            <TableView fx:id="packetTable" 
+                       VBox.vgrow="ALWAYS"
+                       minWidth="500" 
+                       onMouseEntered="#onTableHover"
+                       onMouseExited="#onTableExit"
+                       style="-fx-background-color: #1c1c1e; -fx-table-cell-border-color: transparent; -fx-padding: 5; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0, 4, 4); -fx-control-inner-background: #1c1c1e; -fx-control-inner-background-alt: #252528; -fx-table-header-border-color: transparent; -fx-background-insets: 0; -fx-border-color: transparent; -fx-selection-bar: linear-gradient(to right, #4fc3f7, #29b6f6); -fx-selection-bar-non-focused: linear-gradient(to right, #4fc3f7, #29b6f6); -fx-scale-x: 1; -fx-scale-y: 1;">
+                <columns>
+                    <TableColumn fx:id="timestampColumn" 
+                                 text="⏰ Timestamp" 
+                                 prefWidth="150"
+                                 minWidth="120"
+                                 style="-fx-background-color: linear-gradient(to bottom, #2a2a2e, #1f1f22); -fx-alignment: center;"/>
+                    <TableColumn fx:id="sourceIpColumn" 
+                                 text="📤 Source IP" 
+                                 prefWidth="150"
+                                 minWidth="120"
+                                 style="-fx-background-color: linear-gradient(to bottom, #2a2a2e, #1f1f22); -fx-alignment: center;"/>
+                    <TableColumn fx:id="destIpColumn" 
+                                 text="📥 Destination IP" 
+                                 prefWidth="150"
+                                 minWidth="120"
+                                 style="  -fx-background-color: linear-gradient(to bottom, #2a2a2e, #1f1f22); -fx-alignment: center;"/>
+                    <TableColumn fx:id="protocolColumn" 
+                                 text="🌐 Protocol" 
+                                 prefWidth="100"
+                                 minWidth="80"
+                                 style="-fx-background-color: linear-gradient(to bottom, #2a2a2e, #1f1f22); -fx-alignment: center;"/>
+                    <TableColumn fx:id="sizeColumn" 
+                                 text="📊 Size (bytes)" 
+                                 prefWidth="120"
+                                 minWidth="100"
+                                 style="-fx-background-color: linear-gradient(to bottom, #2a2a2e, #1f1f22); -fx-alignment: center;"/>
+                </columns>
+            </TableView>
+        </VBox>
+        
+        <!-- Chart Panel - Fixed width for proper layout -->
+        <VBox spacing="10" 
+              prefWidth="400" 
+              minWidth="350"
+              maxWidth="450"
+              style="-fx-background-color: #1f1f22; -fx-padding: 15; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 10, 0, 5, 5);">
+            
+            <!-- Chart Title -->
+            <Label text="📊 Protocol Distribution" 
+                   style="-fx-text-fill: #e0e0e0; -fx-font-size: 18; -fx-font-weight: bold; -fx-alignment: center;"
+                   maxWidth="Infinity"/>
+            
+            <!-- Pie Chart -->
+            <PieChart fx:id="protocolChart" 
+                      prefHeight="280"
+                      prefWidth="320"
+                      maxHeight="300"
+                      maxWidth="350"
+                      style="-fx-background-color: transparent; -fx-border-color: transparent;"
+                      legendSide="BOTTOM"
+                      legendVisible="true"
+                      labelsVisible="true"
+                      labelLineLength="15"
+                      startAngle="90"/>
+            
+            <!-- Statistics Panel -->
+            <VBox spacing="8" 
+                  VBox.vgrow="ALWAYS"
+                  style="-fx-background-color: #2a2a2e; -fx-padding: 12; -fx-background-radius: 12;">
+                
+                <!-- Statistics Title -->
+                <Label text="📈 Live Statistics" 
+                       style="-fx-text-fill: #e0e0e0; -fx-font-size: 14; -fx-font-weight: bold; -fx-alignment: center;"
+                       maxWidth="Infinity"/>
+                
+                <!-- Statistics Grid -->
+                <GridPane hgap="10" vgap="8">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" prefWidth="120"/>
+                        <ColumnConstraints halignment="CENTER" prefWidth="80"/>
+                    </columnConstraints>
+                    
+                    <!-- Total Packets -->
+                    <Label text="🔢 Total Packets:" 
+                           GridPane.columnIndex="0" GridPane.rowIndex="0"
+                           style="-fx-text-fill: #b0b0b0; -fx-font-size: 12;"/>
+                    <Label fx:id="totalPacketsLabel" 
+                           text="0"
+                           GridPane.columnIndex="1" GridPane.rowIndex="0"
+                           style="-fx-text-fill: #ffffff; -fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: #4fc3f7; -fx-background-radius: 8; -fx-padding: 4 12; -fx-alignment: center;"
+                           maxWidth="Infinity"/>
+                    
+                    <!-- TCP Packets -->
+                    <Label text="🔗 TCP Packets:" 
+                           GridPane.columnIndex="0" GridPane.rowIndex="1"
+                           style="-fx-text-fill: #b0b0b0; -fx-font-size: 12;"/>
+                    <Label fx:id="tcpPacketsLabel" 
+                           text="0"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"
+                           style="-fx-text-fill: #ffffff; -fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: #81c784; -fx-background-radius: 8; -fx-padding: 4 12; -fx-alignment: center;"
+                           maxWidth="Infinity"/>
+                    
+                    <!-- UDP Packets -->
+                    <Label text="⚡ UDP Packets:" 
+                           GridPane.columnIndex="0" GridPane.rowIndex="2"
+                           style="-fx-text-fill: #b0b0b0; -fx-font-size: 12;"/>
+                    <Label fx:id="udpPacketsLabel" 
+                           text="0"
+                           GridPane.columnIndex="1" GridPane.rowIndex="2"
+                           style="-fx-text-fill: #ffffff; -fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: #ffb74d; -fx-background-radius: 8; -fx-padding: 4 12; -fx-alignment: center;"
+                           maxWidth="Infinity"/>
+                    
+                    <!-- Other Packets -->
+                    <Label text="🌐 Other Packets:" 
+                           GridPane.columnIndex="0" GridPane.rowIndex="3"
+                           style="-fx-text-fill: #b0b0b0; -fx-font-size: 12;"/>
+                    <Label fx:id="otherPacketsLabel" 
+                           text="0"
+                           GridPane.columnIndex="1" GridPane.rowIndex="3"
+                           style="-fx-text-fill: #ffffff; -fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: #ba68c8; -fx-background-radius: 8; -fx-padding: 4 12; -fx-alignment: center;"
+                           maxWidth="Infinity"/>
+                    
+                    <!-- Capture Rate -->
+                    <Label text="⚡ Capture Rate:" 
+                           GridPane.columnIndex="0" GridPane.rowIndex="4"
+                           style="-fx-text-fill: #b0b0b0; -fx-font-size: 12;"/>
+                    <Label fx:id="captureRateLabel" 
+                           text="0.0 pkt/s"
+                           GridPane.columnIndex="1" GridPane.rowIndex="4"
+                           style="-fx-text-fill: #ffffff; -fx-font-size: 12; -fx-font-weight: bold; -fx-background-color: #f06292; -fx-background-radius: 8; -fx-padding: 4 12; -fx-alignment: center;"
+                           maxWidth="Infinity"/>
+                </GridPane>
+                
+                <!-- Status Indicator -->
+                <Separator style="-fx-background-color: #3a3a3e; -fx-padding: 4 0;"/>
+                
+                <HBox alignment="CENTER" spacing="8">
+                    <Label text="🔴 Status:" 
+                           style="-fx-text-fill: #b0b0b0; -fx-font-size: 12;"/>
+                    <Label text="Ready" 
+                           style="-fx-text-fill: #4caf50; -fx-font-size: 12; -fx-font-weight: bold;"/>
+                </HBox>
+                
+            </VBox>
+            
+        </VBox>
+        
+    </HBox>
+    
+</VBox>
