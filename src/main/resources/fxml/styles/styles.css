@@ -1,0 +1,145 @@
+/* =======================================================
+   Global Settings
+   ======================================================= */
+.root {
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    /* Smooth out font rendering */
+    -fx-font-smoothing-type: lcd; 
+}
+
+/* =======================================================
+   TextField
+   ======================================================= */
+/* Add a nice blue glow when typing in the IP filter */
+.text-field:focused {
+    -fx-border-color: #4fc3f7;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(79, 195, 247, 0.4), 8, 0, 0, 0);
+}
+
+/* =======================================================
+   ComboBox (Dropdown list styling)
+   ======================================================= */
+/* The popup container */
+.combo-box-popup .list-view {
+    -fx-background-color: #1f1f22;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #3a3a3e;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 10, 0, 0, 4);
+}
+
+/* Individual items in the dropdown */
+.combo-box-popup .list-cell {
+    -fx-text-fill: #e0e0e0;
+    -fx-padding: 8 15;
+    -fx-background-color: transparent;
+}
+
+/* Hover effect for dropdown items */
+.combo-box-popup .list-cell:hover, 
+.combo-box-popup .list-cell:filled:hover {
+    -fx-background-color: #2a2a2e;
+    -fx-text-fill: #ffffff;
+}
+
+/* Selected item in the dropdown */
+.combo-box-popup .list-cell:selected {
+    -fx-background-color: #4fc3f7;
+    -fx-text-fill: #1c1c1e;
+    -fx-font-weight: bold;
+}
+
+/* =======================================================
+   TableView
+   ======================================================= */
+/* Remove default gray header background */
+.table-view .column-header-background {
+    -fx-background-color: #1f1f22;
+    -fx-background-radius: 10 10 0 0;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-size: 40; /* Make header slightly taller */
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #3a3a3e;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-weight: bold;
+}
+
+/* Alternating row colors for readability */
+.table-row-cell {
+    -fx-background-color: #1c1c1e;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #222225;
+}
+
+/* Row hover state */
+.table-row-cell:hover {
+    -fx-background-color: #2a2a2e;
+}
+
+/* Make text white in table cells */
+.table-view .cell {
+    -fx-text-fill: #d0d0d0;
+}
+
+/* Selected row text color */
+.table-row-cell:selected .cell {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+/* =======================================================
+   ScrollBars (Make them dark to match the theme)
+   ======================================================= */
+.scroll-bar:horizontal, .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal .track, .scroll-bar:vertical .track {
+    -fx-background-color: #1c1c1e;
+    -fx-border-color: transparent;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar:horizontal .thumb, .scroll-bar:vertical .thumb {
+    -fx-background-color: #3a3a3e;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar:horizontal .thumb:hover, .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #4fc3f7;
+}
+
+/* Hide the increment/decrement buttons for a cleaner, modern look */
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+.scroll-bar .increment-arrow, .scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+
+/* =======================================================
+   PieChart
+   ======================================================= */
+/* Style the legend text to be visible on the dark background */
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+.chart-legend-item {
+    -fx-text-fill: #d0d0d0;
+}

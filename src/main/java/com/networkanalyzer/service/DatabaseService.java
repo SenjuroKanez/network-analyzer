@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseService {
-    private static final String URL = "jdbc:mysql://localhost:3306/networkanalyzer";
+    private static final String URL = "jdbc:mysql://localhost:3306/netlyzer";
     private static final String USER = "root";
-    private static final String PASSWORD = "mateenbhaipayara";
+    private static final String PASSWORD = "asdf";
 
     public DatabaseService() {
         initializeDatabase();
